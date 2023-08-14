@@ -1,3 +1,5 @@
+import { difference } from "./deps.ts";
+
 import { getRepeatsOfInterest } from "./getRepeatsOfInterest.ts";
 import { getRepeatsFromStorage } from "./persistence/getRepeatsFromStorage.ts";
 
@@ -13,7 +15,22 @@ export const generateReport = async () => {
 
   const repeatsOfInterest = getRepeatsOfInterest(repeats);
 
-  console.log(repeatsOfInterest);
+  const reportItems = repeatsOfInterest.map(
+    ({ nextIssueDate, drug: { name }, calculatedDailyDose }) => {
+      const daysUntilNextIssue =
+        difference(nextIssueDate, new Date(), { units: ["days"] })
+          .days;
+
+      return {
+        name,
+        nextIssueDate: nextIssueDate.toLocaleString(),
+        daysUntilNextIssue,
+        calculatedDailyDose,
+      };
+    },
+  );
+
+  console.log(reportItems);
 };
 
 await generateReport();

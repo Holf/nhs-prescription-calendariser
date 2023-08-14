@@ -1,22 +1,35 @@
-export type Repeat = {
+type CoreRepeat = {
   drug: {
     id: string;
     name: string;
     details: string;
     constituents: unknown[];
   };
-  dateLastIssued: Date;
-  nextIssueDate: Date;
+
   reviewDate: string | null;
   dateLastIssuedNotKnown: boolean;
   duration: number;
   isPending: boolean;
   quantityRepresentation: string;
-  unStructuredDescription: null | unknown;
+  unStructuredDescription: unknown | null;
   prescriptionType: string;
 };
 
-export type RawRepeat = Omit<Repeat, "dateLastIssued" | "nextIssueDate"> & {
-  dateLastIssued: string;
-  nextIssueDate: string;
+type CalculatedProperties = {
+  calculatedQuantity: number | null;
+  calculatedDailyDose: number | null;
 };
+
+type DateProperties<T extends string | Date> = {
+  dateLastIssued: T;
+  nextIssueDate: T;
+};
+
+export type ApiRepeat = CoreRepeat & DateProperties<string>;
+
+export type Repeat = CoreRepeat & CalculatedProperties & DateProperties<Date>;
+
+export type RawRepeat =
+  & CoreRepeat
+  & CalculatedProperties
+  & DateProperties<string>;

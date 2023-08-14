@@ -34,7 +34,8 @@ const addNewRepeatsFromApiToStorageRepeats = (
   repeatsFromApi.forEach((apiRepeat) => {
     const possibleStoreRepeat = repeatsFromStorage.find((storedRepeat) =>
       storedRepeat.drug.name === apiRepeat.drug.name &&
-      storedRepeat.dateLastIssued === apiRepeat.dateLastIssued
+      storedRepeat.dateLastIssued.getTime() ===
+        apiRepeat.dateLastIssued.getTime()
     );
 
     if (possibleStoreRepeat === undefined) {

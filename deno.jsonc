@@ -1,0 +1,8 @@
+{
+  "tasks": {
+    "test": "deno test",
+    "dev": "deno run --watch --allow-read src/generateReport.ts",
+    "report": "deno run --allow-read src/generateReport.ts",
+    "updateStorageFromApi": "deno run --allow-read --allow-write --allow-net=api.patientaccess.com src/updateRepeatsDataStore.ts"
+  }
+}

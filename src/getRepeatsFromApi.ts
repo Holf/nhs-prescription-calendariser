@@ -1,5 +1,8 @@
 import { RawRepeat } from "./Repeat.ts";
-import { getRepeatsFromRawRepeats } from "./repeatsSerialization/getRepeatsFromJson.ts";
+import {
+  getRepeatsFromRawRepeats,
+} from "./repeatsSerialization/getRepeatsFromRawRepeats.ts";
+import { addCalculatedPropertiesToRepeats } from "./repeatsSerialization/addCalculatedPropertiesToRepeats.ts";
 
 const getFetchParams = (bearer: string) => ({
   headers: {
@@ -32,5 +35,7 @@ export const getRepeatsFromApi = async (bearer: string) => {
 
   const repeatsInfo = await res.json();
 
-  return getRepeatsFromRawRepeats(repeatsInfo.repeats as RawRepeat[]);
+  return addCalculatedPropertiesToRepeats(
+    getRepeatsFromRawRepeats(repeatsInfo.repeats as RawRepeat[]),
+  );
 };
