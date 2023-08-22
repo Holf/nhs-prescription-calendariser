@@ -10,7 +10,19 @@ const medicationsOfInterestRegExp = new RegExp(
 );
 
 export const getRepeatsOfInterest = (repeats: Repeat[]) => {
-  return repeats.filter((repeat) =>
+  const repeatsOfInterest = repeats.filter((repeat) =>
     medicationsOfInterestRegExp.test(repeat.drug.name)
   );
+
+  repeatsOfInterest.sort((a, b) =>
+    a.dateLastIssued.getTime() - b.dateLastIssued.getTime()
+  );
+
+  const mostRecentRepeats = new Map<string, Repeat>();
+
+  repeatsOfInterest.forEach((repeat) =>
+    mostRecentRepeats.set(repeat.drug.name, repeat)
+  );
+
+  return Array.from(mostRecentRepeats.values());
 };

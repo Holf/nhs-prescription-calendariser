@@ -3,6 +3,8 @@ import { difference } from "./deps.ts";
 import { getRepeatsOfInterest } from "./getRepeatsOfInterest.ts";
 import { getRepeatsFromStorage } from "./persistence/getRepeatsFromStorage.ts";
 
+const repeatRequestLeadTimeInDays = 7;
+
 // const prettifyDate = (dateString: string) => {
 //   const date = new Date(dateString);
 //   const prettyDate = date.toLocaleString("default", { month: "short" });
@@ -16,16 +18,26 @@ export const generateReport = async () => {
   const repeatsOfInterest = getRepeatsOfInterest(repeats);
 
   const reportItems = repeatsOfInterest.map(
-    ({ nextIssueDate, drug: { name }, calculatedDailyDose }) => {
-      const daysUntilNextIssue =
-        difference(nextIssueDate, new Date(), { units: ["days"] })
-          .days;
+    (
+      {
+        dateLastIssued,
+        nextIssueDate,
+        drug: { name },
+        calculatedDailyDose,
+        errors,
+      },
+    ) => {
+      const daysUntilRepeatCanBeOrdered =
+        ((difference(nextIssueDate, new Date(), { units: ["days"] })
+          .days) ?? 0) - repeatRequestLeadTimeInDays;
 
       return {
         name,
-        nextIssueDate: nextIssueDate.toLocaleString(),
-        daysUntilNextIssue,
+        dateLastIssued: dateLastIssued.toDateString(),
+        nextIssueDate: nextIssueDate.toDateString(),
+        daysUntilRepeatCanBeOrdered,
         calculatedDailyDose,
+        errors,
       };
     },
   );

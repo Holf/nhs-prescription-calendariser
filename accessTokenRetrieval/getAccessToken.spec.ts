@@ -1,7 +1,12 @@
-import { test, type Page } from "@playwright/test";
+import { test, type Page, expect } from "@playwright/test";
 import config from "../reportGeneration/src/config.json";
 
 const { username, password, memorable } = config;
+
+const doRandomWait = async (page: Page) => {
+    const waitTimeInMs = (Math.random() * 2 + 1) * 1000;
+    await page.waitForTimeout(waitTimeInMs);
+};
 
 const fieldPrefixes = ["first", "second", "third"];
 
@@ -24,9 +29,13 @@ test("should retrieve AccessToken", async ({ page }) => {
     const usernameInput = page.getByPlaceholder("Enter your email or User ID");
     const passwordInput = page.getByPlaceholder("Enter your password");
 
+    await doRandomWait(page);
     await usernameInput.fill(username);
+
+    await doRandomWait(page);
     await passwordInput.fill(password);
 
+    await doRandomWait(page);
     await passwordInput.press("Enter");
 
     await page.waitForURL(
@@ -34,16 +43,31 @@ test("should retrieve AccessToken", async ({ page }) => {
     );
 
     for (const prefix of fieldPrefixes) {
+        await doRandomWait(page);
         await populateCharacter(page, prefix);
     }
 
-    await page.getByText("Continue").click();
+    await doRandomWait(page);
+    await page.getByText("Continue").click({ timeout: 20000 });
 
-    await page.waitForURL("https://app.patientaccess.com/dashboard");
+    const tokenResponse = await page.waitForResponse(
+        "https://account.patientaccess.com/connect/token",
+        { timeout: 20000 }
+    );
+    const tokenData = await tokenResponse.json();
 
-    const accessToken = await getAccessTokenFromSessionStorage(page);
+    const token = tokenData.access_token;
 
-    console.log(accessToken);
+    console.log(token);
+
+    // await page.waitForURL("https://app.patientaccess.com/dashboard");
+
+    // const locator = page.locator("#next-appointment");
+    // await expect(locator).toBeVisible({ timeout: 20000 });
+
+    // const accessToken = await getAccessTokenFromSessionStorage(page);
+
+    // console.log(accessToken);
 });
 
 async function getAccessTokenFromSessionStorage(page: Page) {

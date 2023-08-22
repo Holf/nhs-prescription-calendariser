@@ -1,4 +1,4 @@
-import { RawRepeat } from "./Repeat.ts";
+import { ApiRepeat } from "./Repeat.ts";
 import {
   getRepeatsFromRawRepeats,
 } from "./repeatsSerialization/getRepeatsFromRawRepeats.ts";
@@ -35,7 +35,12 @@ export const getRepeatsFromApi = async (bearer: string) => {
 
   const repeatsInfo = await res.json();
 
+  const repeatsWithErrorsList = repeatsInfo.repeats.map((x: ApiRepeat) => ({
+    ...x,
+    errors: [],
+  }));
+
   return addCalculatedPropertiesToRepeats(
-    getRepeatsFromRawRepeats(repeatsInfo.repeats as RawRepeat[]),
+    getRepeatsFromRawRepeats(repeatsWithErrorsList),
   );
 };

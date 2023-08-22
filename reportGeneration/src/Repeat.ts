@@ -18,6 +18,7 @@ type CoreRepeat = {
 type CalculatedProperties = {
   calculatedQuantity: number | null;
   calculatedDailyDose: number | null;
+  errors: string[];
 };
 
 type DateProperties<T extends string | Date> = {
