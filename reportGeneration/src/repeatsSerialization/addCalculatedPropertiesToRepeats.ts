@@ -1,7 +1,7 @@
 import { Repeat } from "../Repeat.ts";
 import { extractDigitsAndMultiply } from "./extractDigitsAndMultiply.ts";
 
-import config from "../config.json" assert { type: "json" };
+import config from "../configuration/config.json" assert { type: "json" };
 
 export const addCalculatedPropertiesToRepeats = (
   repeats: Repeat[],

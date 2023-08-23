@@ -1,16 +1,10 @@
-import { difference } from "./deps.ts";
+import { difference } from "../deps.ts";
 
 import { getRepeatsOfInterest } from "./getRepeatsOfInterest.ts";
-import { getRepeatsFromStorage } from "./persistence/getRepeatsFromStorage.ts";
+import { getRepeatsFromStorage } from "../persistence/getRepeatsFromStorage.ts";
+import { getMedicationStockCount } from "./getMedicationStockCount.ts";
 
 const repeatRequestLeadTimeInDays = 7;
-
-// const prettifyDate = (dateString: string) => {
-//   const date = new Date(dateString);
-//   const prettyDate = date.toLocaleString("default", { month: "short" });
-
-//   return prettyDate;
-// };
 
 export const generateReport = async () => {
   const repeats = await getRepeatsFromStorage();
@@ -36,13 +30,18 @@ export const generateReport = async () => {
         dateLastIssued: dateLastIssued.toDateString(),
         nextIssueDate: nextIssueDate.toDateString(),
         daysUntilRepeatCanBeOrdered,
-        calculatedDailyDose,
+        dailyDose: calculatedDailyDose,
         errors,
       };
     },
   );
 
-  console.log(reportItems);
+  const reportItemsWithStockCounts = reportItems.map((x) => ({
+    ...x,
+    stockCount: getMedicationStockCount({ medicationName: x.name, repeats }),
+  }));
+
+  console.log(reportItemsWithStockCounts);
 };
 
 await generateReport();

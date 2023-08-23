@@ -1,8 +1,8 @@
-import { ApiRepeat } from "./Repeat.ts";
+import { ApiRepeat } from "../Repeat.ts";
 import {
   getRepeatsFromRawRepeats,
-} from "./repeatsSerialization/getRepeatsFromRawRepeats.ts";
-import { addCalculatedPropertiesToRepeats } from "./repeatsSerialization/addCalculatedPropertiesToRepeats.ts";
+} from "../repeatsSerialization/getRepeatsFromRawRepeats.ts";
+import { addCalculatedPropertiesToRepeats } from "../repeatsSerialization/addCalculatedPropertiesToRepeats.ts";
 
 const getFetchParams = (bearer: string) => ({
   headers: {

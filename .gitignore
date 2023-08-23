@@ -1,4 +1,4 @@
-config.json
+configuration/
 dataStore/
 node_modules/
 test-results/
