@@ -1,9 +1,21 @@
 {
   "tasks": {
-    "test": "deno test",
-    "dev": "deno run --watch --allow-read src/reporting/generateReport.ts",
-    "report": "deno run --allow-read src/reporting/generateReport.ts",
-    "updateStorageFromApi": "deno run --allow-read --allow-write --allow-net=api.patientaccess.com src/updateRepeatsDataStore.ts"
+    "test": "deno test --watch",
+    "dev": "deno run --check=all --watch --allow-read src/reporting/generateReport.ts",
+    "report": "deno run --check=all --allow-read src/reporting/generateReport.ts",
+    "update": "deno run --check=all --allow-read --allow-write --allow-net=api.patientaccess.com src/updatingFromApi/updateRepeatsDataStore.ts"
   },
-  "exclude": ["./accessTokenRetrieval"]
+  "imports": {
+    "@src/": "./src/"
+  },
+  "lint": {
+    "include": ["src/"],
+    "rules": {
+      "tags": ["recommended"],
+      "include": [
+        "explicit-function-return-type",
+        "no-external-import"
+      ]
+    }
+  }
 }

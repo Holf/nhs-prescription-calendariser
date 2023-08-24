@@ -1,4 +1,4 @@
-import { Repeat } from "../Repeat.ts";
+import { Repeat } from "@src/Repeat.ts";
 import { getRepeatsFromRawRepeats } from "./getRepeatsFromRawRepeats.ts";
 
 export const getRepeatsFromJson = (json: string): Repeat[] => {

@@ -1,4 +1,4 @@
-import { assertEquals } from "https://deno.land/std@0.198.0/assert/mod.ts";
+import { assertEquals } from "@src/deps.ts";
 import { extractDigitsAndMultiply } from "./extractDigitsAndMultiply.ts";
 
 const scenarios: [string, number | null][] = [

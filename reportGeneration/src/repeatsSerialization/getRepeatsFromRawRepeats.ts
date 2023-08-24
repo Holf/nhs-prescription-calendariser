@@ -1,4 +1,4 @@
-import { RawRepeat, Repeat } from "../Repeat.ts";
+import { RawRepeat, Repeat } from "@src/Repeat.ts";
 
 export const getRepeatsFromRawRepeats = (rawRepeats: RawRepeat[]): Repeat[] => {
   const repeats: Repeat[] = rawRepeats.map((x: RawRepeat) => {

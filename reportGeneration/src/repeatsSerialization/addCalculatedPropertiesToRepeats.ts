@@ -1,7 +1,8 @@
-import { Repeat } from "../Repeat.ts";
+import { Repeat } from "@src/Repeat.ts";
 import { extractDigitsAndMultiply } from "./extractDigitsAndMultiply.ts";
 
-import config from "../configuration/config.json" assert { type: "json" };
+import { startingQuantities } from "@src/configuration/startingQuantities.ts";
+import { getMostRecentDailyDose } from "@src/stockCounting/getDoseChanges.ts";
 
 export const addCalculatedPropertiesToRepeats = (
   repeats: Repeat[],
@@ -11,7 +12,7 @@ export const addCalculatedPropertiesToRepeats = (
       repeat.quantityRepresentation,
     );
 
-    if (calculatedQuantity === null) {
+    if (Number.isNaN(calculatedQuantity)) {
       repeat.errors.push(
         "Quantity could not be extracted from 'quantityRepresentation'.",
       );
@@ -24,13 +25,17 @@ export const addCalculatedPropertiesToRepeats = (
     }
 
     const calculatedDailyDose = calculatedQuantity / repeat.duration;
-    const expectedDailyDose = config.medications.find((medication) =>
-      medication.name === repeat.drug.name
-    )?.expectedDailyDose;
+
+    const expectedDailyDose = getMostRecentDailyDose(repeat.drug.name) ??
+      startingQuantities.get(repeat.drug.name)?.startingDailyDose ?? Number.NaN;
+
+    // const expectedDailyDose = config.medications.find((medication) =>
+    //   medication.name === repeat.drug.name
+    // )?.expectedDailyDose;
 
     if (expectedDailyDose && expectedDailyDose !== calculatedDailyDose) {
       repeat.errors.push(
-        `Calculated Daily Dose of ${calculatedDailyDose} does not match Expected Daily Dose of ${expectedDailyDose}. Using Expected Daily Dose.`,
+        `Calculated Daily Dose of ${calculatedDailyDose} does not match most recent Daily Dose of ${expectedDailyDose}. Using most recent Daily Dose.`,
       );
 
       return {

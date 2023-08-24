@@ -1,9 +1,9 @@
-import { Repeat } from "../Repeat.ts";
+import { Repeat } from "@src/Repeat.ts";
 
-import config from "../configuration/config.json" assert { type: "json" };
+import config from "@src/configuration/config.json" assert { type: "json" };
 import { getRepeatsFromApi } from "./getRepeatsFromApi.ts";
-import { getRepeatsFromStorage } from "../persistence/getRepeatsFromStorage.ts";
-import { persistRepeatsToStorage } from "../persistence/persistRepeatsToStorage.ts";
+import { getRepeatsFromStorage } from "@src/persistence/getRepeatsFromStorage.ts";
+import { persistRepeatsToStorage } from "@src/persistence/persistRepeatsToStorage.ts";
 
 const { bearer } = config;
 

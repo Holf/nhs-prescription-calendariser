@@ -21,7 +21,7 @@ export const extractDigitsAndMultiply = (inputString: string) => {
   const digitNumbers = digitStrings ? digitStrings.map(Number) : null;
 
   if (digitNumbers === null) {
-    return null;
+    return Number.NaN;
   }
 
   const multiplied = digitNumbers.reduce((total, number) => total * number, 1);

@@ -1,6 +1,6 @@
-import { Repeat } from "../Repeat.ts";
-import { getJsonFromRepeats } from "../repeatsSerialization/getJsonFromRepeats.ts";
-import { repeatsDataStoreFilePath } from "./constants.ts";
+import { Repeat } from "@src/Repeat.ts";
+import { getJsonFromRepeats } from "@src/repeatsSerialization/getJsonFromRepeats.ts";
+import { repeatsDataStoreFilePath } from "@src/persistence/constants.ts";
 
 export const persistRepeatsToStorage = async (
   repeats: Repeat[],

@@ -1,4 +1,4 @@
-import { getRepeatsFromJson } from "../repeatsSerialization/getRepeatsFromJson.ts";
+import { getRepeatsFromJson } from "@src/repeatsSerialization/getRepeatsFromJson.ts";
 import { repeatsDataStoreFilePath } from "./constants.ts";
 
 export const getRepeatsFromStorage = async () => {

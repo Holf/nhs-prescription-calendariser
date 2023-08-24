@@ -1,6 +1,6 @@
-import config from "../configuration/config.json" assert { type: "json" };
+import config from "@src/configuration/config.json" assert { type: "json" };
 
-import { Repeat } from "../Repeat.ts";
+import { Repeat } from "@src/Repeat.ts";
 
 const { medicationsOfInterest } = config;
 

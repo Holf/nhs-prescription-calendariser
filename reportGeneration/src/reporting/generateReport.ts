@@ -1,7 +1,7 @@
-import { getRepeatsOfInterest } from "./getRepeatsOfInterest.ts";
-import { getRepeatsFromStorage } from "../persistence/getRepeatsFromStorage.ts";
-import { getMedicationStockCount } from "./getMedicationStockCount.ts";
-import { getDateDifferenceInDays } from "../utilities/dateUtilities.ts";
+import { getRepeatsOfInterest } from "@src/reporting/getRepeatsOfInterest.ts";
+import { getRepeatsFromStorage } from "@src/persistence/getRepeatsFromStorage.ts";
+import { getMedicationStockCount } from "@src/reporting/getMedicationStockCount/index.ts";
+import { getDateDifferenceInDays } from "@src/utilities/dateUtilities.ts";
 
 const repeatRequestLeadTimeInDays = 7;
 
@@ -26,19 +26,37 @@ export const generateReport = async () => {
 
       return {
         name,
-        dateLastIssued: dateLastIssued.toDateString(),
-        nextIssueDate: nextIssueDate.toDateString(),
-        daysUntilRepeatCanBeOrdered,
-        dailyDose: calculatedDailyDose,
+        prescriptionInfo: {
+          dateLastIssued: dateLastIssued.toDateString(),
+          nextIssueDate: nextIssueDate.toDateString(),
+          daysUntilRepeatCanBeOrdered,
+        },
+        stockInfo: {
+          dailyDose: calculatedDailyDose ?? Number.NaN,
+        },
         errors,
       };
     },
   );
 
-  const reportItemsWithStockCounts = reportItems.map((x) => ({
-    ...x,
-    stockCount: getMedicationStockCount({ medicationName: x.name, repeats }),
-  }));
+  const reportItemsWithStockCounts = reportItems.map((x) => {
+    const stockCount = getMedicationStockCount({
+      medicationName: x.name,
+      repeats,
+    });
+    const daysUntilStockIsDepleted = Math.floor(
+      stockCount / x.stockInfo.dailyDose,
+    );
+
+    return ({
+      ...x,
+      stockInfo: {
+        ...x.stockInfo,
+        stockCount,
+        daysUntilStockIsDepleted,
+      },
+    });
+  });
 
   console.log(reportItemsWithStockCounts);
 };

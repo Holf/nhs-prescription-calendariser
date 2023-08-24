@@ -1,4 +1,4 @@
-import { RawRepeat, Repeat } from "../Repeat.ts";
+import { RawRepeat, Repeat } from "@src/Repeat.ts";
 
 const toUTC = (date: Date) => {
   const offset = date.getTimezoneOffset();
