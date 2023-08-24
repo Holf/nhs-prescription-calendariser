@@ -1,8 +1,7 @@
-import { difference } from "../deps.ts";
-
 import { getRepeatsOfInterest } from "./getRepeatsOfInterest.ts";
 import { getRepeatsFromStorage } from "../persistence/getRepeatsFromStorage.ts";
 import { getMedicationStockCount } from "./getMedicationStockCount.ts";
+import { getDateDifferenceInDays } from "../utilities/dateUtilities.ts";
 
 const repeatRequestLeadTimeInDays = 7;
 
@@ -22,8 +21,8 @@ export const generateReport = async () => {
       },
     ) => {
       const daysUntilRepeatCanBeOrdered =
-        ((difference(nextIssueDate, new Date(), { units: ["days"] })
-          .days) ?? 0) - repeatRequestLeadTimeInDays;
+        getDateDifferenceInDays(nextIssueDate, new Date()) -
+        repeatRequestLeadTimeInDays;
 
       return {
         name,

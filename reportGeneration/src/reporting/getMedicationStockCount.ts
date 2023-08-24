@@ -4,7 +4,7 @@ import {
   startingQuantities,
   startingQuantityDate,
 } from "../configuration/startingQuantities.ts";
-import { difference } from "../deps.ts";
+import { getDateDifferenceInDays } from "../utilities/dateUtilities.ts";
 
 const getSumOfNumberArray = (arrayOfNumbers: number[]) =>
   arrayOfNumbers.reduce(
@@ -12,37 +12,59 @@ const getSumOfNumberArray = (arrayOfNumbers: number[]) =>
     0,
   );
 
-const getIncomingStockCount = (repeats: Repeat[], medicationName: string) => {
-  const incomingStockCount = getSumOfNumberArray(
+const getCountOfIncomingStock = (repeats: Repeat[], medicationName: string) => {
+  const countOfIncomingStock = getSumOfNumberArray(
     repeats
       .filter((x) => x.drug.name === medicationName)
       .map((x) => x.calculatedQuantity ?? 0),
   );
 
-  return incomingStockCount;
+  return countOfIncomingStock;
 };
 
 const getCountOfDosesTaken = (
   medicationName: string,
 ): number => {
-  const startingDoseForThisMedication =
-    startingQuantities.get(medicationName)?.startingDailyDose ?? 0;
+  const medicationStartDatum = startingQuantities.get(medicationName);
 
   const doseChangesForThisMedication = doseChanges.get(medicationName) ?? [];
 
-  const relevantDoseChanges = doseChangesForThisMedication.filter((x) =>
-    x.dateOfChange > startingQuantityDate
+  const relevantDoseChanges = [
+    {
+      dateOfChange: startingQuantityDate,
+      newDailyDose: medicationStartDatum?.startingDailyDose ?? 0,
+    },
+    ...doseChangesForThisMedication.filter((x) =>
+      x.dateOfChange > startingQuantityDate
+    ),
+  ];
+
+  return relevantDoseChanges.reduce(
+    (cumulativeDoseCount, currentDoseChange, currentIndex, array) => {
+      const nextDoseChange = array[currentIndex + 1];
+
+      if (nextDoseChange === undefined) {
+        const dayCount = getDateDifferenceInDays(
+          currentDoseChange.dateOfChange,
+          new Date(),
+        );
+
+        const additionalDoseCount = currentDoseChange.newDailyDose * dayCount;
+
+        return cumulativeDoseCount + additionalDoseCount;
+      }
+
+      const dayCount = getDateDifferenceInDays(
+        currentDoseChange.dateOfChange,
+        nextDoseChange.dateOfChange,
+      );
+
+      const additionalDoseCount = currentDoseChange.newDailyDose * dayCount;
+
+      return cumulativeDoseCount + additionalDoseCount;
+    },
+    0,
   );
-
-  if (relevantDoseChanges.length === 0) {
-    const countOfDays = difference(startingQuantityDate, new Date(), {
-      units: ["days"],
-    }).days ?? 0;
-
-    return countOfDays * startingDoseForThisMedication;
-  }
-
-  return 0;
 };
 
 export const getMedicationStockCount = (
@@ -55,12 +77,12 @@ export const getMedicationStockCount = (
     x.dateLastIssued > startingQuantityDate
   );
 
-  const incomingStockCount = getIncomingStockCount(
+  const countOfIncomingStock = getCountOfIncomingStock(
     repeatsAfterStartingQuantityDate,
     medicationName,
   );
 
   const countOfDosesTaken = getCountOfDosesTaken(medicationName);
 
-  return startingQuantity + incomingStockCount - countOfDosesTaken;
+  return startingQuantity + countOfIncomingStock - countOfDosesTaken;
 };
