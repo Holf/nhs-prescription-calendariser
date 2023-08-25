@@ -1,14 +1,15 @@
-import {
-  startingQuantities,
-  startingQuantityDate,
-} from "@src/configuration/startingQuantities.ts";
 import { getDateDifferenceInDays } from "@src/utilities/dateUtilities.ts";
 import { getDoseChanges } from "@src/stockCounting/getDoseChanges.ts";
+
+import {
+  getStartingQuantity,
+  startingQuantityDate,
+} from "@src/stockCounting/getStartingQuantity.ts";
 
 export const getCountOfDosesTaken = (
   medicationName: string,
 ): number => {
-  const medicationStartDatum = startingQuantities.get(medicationName);
+  const medicationStartDatum = getStartingQuantity(medicationName);
 
   const doseChangesForThisMedication = getDoseChanges(medicationName) ?? [];
 

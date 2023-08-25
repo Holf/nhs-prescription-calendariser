@@ -1,6 +1,7 @@
 import doseChangesJson from "@src/configuration/doseChanges.json" assert {
   type: "json",
 };
+
 import { DoseChange } from "@src/stockCounting/DoseChange.ts";
 
 const doseChanges = doseChangesJson.map((

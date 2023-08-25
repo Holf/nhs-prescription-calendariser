@@ -1,8 +1,8 @@
 import { Repeat } from "@src/Repeat.ts";
 import { extractDigitsAndMultiply } from "./extractDigitsAndMultiply.ts";
 
-import { startingQuantities } from "@src/configuration/startingQuantities.ts";
 import { getMostRecentDailyDose } from "@src/stockCounting/getDoseChanges.ts";
+import { getStartingQuantity } from "@src/stockCounting/getStartingQuantity.ts";
 
 export const addCalculatedPropertiesToRepeats = (
   repeats: Repeat[],
@@ -27,11 +27,7 @@ export const addCalculatedPropertiesToRepeats = (
     const calculatedDailyDose = calculatedQuantity / repeat.duration;
 
     const expectedDailyDose = getMostRecentDailyDose(repeat.drug.name) ??
-      startingQuantities.get(repeat.drug.name)?.startingDailyDose ?? Number.NaN;
-
-    // const expectedDailyDose = config.medications.find((medication) =>
-    //   medication.name === repeat.drug.name
-    // )?.expectedDailyDose;
+      getStartingQuantity(repeat.drug.name)?.startingDailyDose ?? Number.NaN;
 
     if (expectedDailyDose && expectedDailyDose !== calculatedDailyDose) {
       repeat.errors.push(
