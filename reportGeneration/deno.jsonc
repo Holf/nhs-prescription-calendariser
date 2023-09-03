@@ -6,7 +6,8 @@
     "update": "deno run --check=all --allow-read --allow-write --allow-net=api.patientaccess.com src/updatingFromApi/updateRepeatsDataStore.ts"
   },
   "imports": {
-    "@src/": "./src/"
+    "@src/": "./src/",
+    "@accessTokenRetrieval/": "../accessTokenRetrieval/"
   },
   "lint": {
     "include": ["src/"],

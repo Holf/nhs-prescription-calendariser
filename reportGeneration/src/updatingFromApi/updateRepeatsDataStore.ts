@@ -1,11 +1,13 @@
 import { Repeat } from "@src/Repeat.ts";
 
-import config from "@src/configuration/config.json" assert { type: "json" };
+import accessTokenJson from "@accessTokenRetrieval/accessToken.json" assert {
+  type: "json",
+};
 import { getRepeatsFromApi } from "./getRepeatsFromApi.ts";
 import { getRepeatsFromStorage } from "@src/persistence/getRepeatsFromStorage.ts";
 import { persistRepeatsToStorage } from "@src/persistence/persistRepeatsToStorage.ts";
 
-const { bearer } = config;
+const { accessToken } = accessTokenJson;
 
 // const logAddedAndDroppedMedications = (
 //   repeatsFromApi: Repeat[],
@@ -59,12 +61,14 @@ const addNewRepeatsFromApiToStorageRepeats = (
 export const updateRepeatsDataStore = async () => {
   console.log("Updating data store with new Repeat Prescriptions info...\n");
 
-  const repeatsFromApi: Repeat[] = await getRepeatsFromApi(bearer);
+  const repeatsFromApi: Repeat[] = await getRepeatsFromApi(accessToken);
   const repeatsFromStorage = await getRepeatsFromStorage();
 
   addNewRepeatsFromApiToStorageRepeats(repeatsFromApi, repeatsFromStorage);
 
   persistRepeatsToStorage(repeatsFromStorage);
 };
+
+console.log(accessToken);
 
 await updateRepeatsDataStore();
