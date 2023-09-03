@@ -39,10 +39,12 @@ export const generateReport = async () => {
     },
   );
 
+  const collectedRepeats = repeats.filter((x) => x.collected === true);
+
   const reportItemsWithStockCounts = reportItems.map((x) => {
     const stockCount = getMedicationStockCount({
       medicationName: x.name,
-      repeats,
+      repeats: collectedRepeats,
     });
     const daysUntilStockIsDepleted = Math.floor(
       stockCount / x.stockInfo.dailyDose,
