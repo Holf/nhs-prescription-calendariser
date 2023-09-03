@@ -41,21 +41,30 @@ export const generateReport = async () => {
 
   const collectedRepeats = repeats.filter((x) => x.collected === true);
 
-  const reportItemsWithStockCounts = reportItems.map((x) => {
+  const reportItemsWithStockCounts = reportItems.map((reportItem) => {
     const stockCount = getMedicationStockCount({
-      medicationName: x.name,
+      medicationName: reportItem.name,
       repeats: collectedRepeats,
     });
+
     const daysUntilStockIsDepleted = Math.floor(
-      stockCount / x.stockInfo.dailyDose,
+      stockCount / reportItem.stockInfo.dailyDose,
     );
 
+    // TODO: There should never be more than one uncollected repeat for
+    // any medication... maybe we should add an error, here, if we find
+    // there is?
+    const uncollectedStockCount = repeats.find((repeat) =>
+      repeat.collected === false && repeat.drug.name === reportItem.name
+    )?.calculatedQuantity ?? null;
+
     return ({
-      ...x,
+      ...reportItem,
       stockInfo: {
-        ...x.stockInfo,
+        ...reportItem.stockInfo,
         stockCount,
         daysUntilStockIsDepleted,
+        uncollectedStockCount,
       },
     });
   });

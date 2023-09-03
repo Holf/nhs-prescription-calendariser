@@ -5,6 +5,7 @@ const getSumOfNumberArray = (arrayOfNumbers: number[]) =>
     (accumulator: number, currentValue: number) => accumulator + currentValue,
     0,
   );
+
 export const getCountOfIncomingStock = (
   repeats: Repeat[],
   medication_Name: string,
