@@ -2,9 +2,6 @@ const fs = require("fs/promises");
 
 const { chromium } = require("@playwright/test");
 
-const sessionStorageKey =
-    "oidc.user:https://account.patientaccess.com:pkce_patientaccess_web";
-
 const loginTimeoutInMs = 180 * 1000;
 
 (async () => {
@@ -18,7 +15,14 @@ const loginTimeoutInMs = 180 * 1000;
         null,
         { timeout: loginTimeoutInMs }
     );
-    // Retrieve value from local storage
+
+    // TODO: Untested... we want to wait until we're sure session storage value is up-to-date. This should do it...
+    await page
+        .getByRole("link", {
+            name: "Book new",
+        })
+        .waitFor({ state: "visible" });
+
     const value = await page.evaluate(() =>
         sessionStorage.getItem(
             "oidc.user:https://account.patientaccess.com:pkce_patientaccess_web"
