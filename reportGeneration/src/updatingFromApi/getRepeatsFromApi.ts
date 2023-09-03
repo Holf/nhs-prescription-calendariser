@@ -33,11 +33,21 @@ export const getRepeatsFromApi = async (bearer: string) => {
     getFetchParams(bearer),
   );
 
+  if (!res.ok) {
+    const body = await res.text();
+    throw Error(JSON.stringify({
+      error: "Prescriptions API request failed",
+      status: res.status,
+      body,
+    }));
+  }
+
   const repeatsInfo = await res.json();
 
   const repeatsWithErrorsList = repeatsInfo.repeats.map((x: ApiRepeat) => ({
     ...x,
     errors: [],
+    collected: false,
   }));
 
   return addCalculatedPropertiesToRepeats(
