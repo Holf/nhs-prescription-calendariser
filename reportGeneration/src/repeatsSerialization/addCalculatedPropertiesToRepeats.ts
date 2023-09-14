@@ -26,8 +26,8 @@ export const addCalculatedPropertiesToRepeats = (
 
     const calculatedDailyDose = calculatedQuantity / repeat.duration;
 
-    const expectedDailyDose = getMostRecentDailyDose(repeat.drug.name) ??
-      getStartingQuantity(repeat.drug.name)?.startingDailyDose ?? Number.NaN;
+    const expectedDailyDose = getMostRecentDailyDose(repeat.drug.name) ||
+      (getStartingQuantity(repeat.drug.name)?.startingDailyDose ?? Number.NaN);
 
     if (expectedDailyDose && expectedDailyDose !== calculatedDailyDose) {
       repeat.errors.push(
