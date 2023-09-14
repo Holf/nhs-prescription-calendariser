@@ -69,6 +69,4 @@ export const updateRepeatsDataStore = async () => {
   persistRepeatsToStorage(repeatsFromStorage);
 };
 
-console.log(accessToken);
-
 await updateRepeatsDataStore();
