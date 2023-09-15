@@ -20,9 +20,11 @@ export const generateReport = async () => {
         errors,
       },
     ) => {
-      const daysUntilRepeatCanBeOrdered =
+      const daysUntilRepeatCanBeOrdered = Math.max(
         getDateDifferenceInDays(nextIssueDate, new Date()) -
-        repeatRequestLeadTimeInDays;
+          repeatRequestLeadTimeInDays,
+        0,
+      );
 
       return {
         name,
