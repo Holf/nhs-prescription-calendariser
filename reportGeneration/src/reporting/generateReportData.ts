@@ -5,7 +5,7 @@ import { getDateDifferenceInDays } from "@src/utilities/dateUtilities.ts";
 
 const repeatRequestLeadTimeInDays = 7;
 
-export const generateReport = async () => {
+export const generateReportData = async () => {
   const repeats = await getRepeatsFromStorage();
 
   const repeatsOfInterest = getRepeatsOfInterest(repeats);
@@ -71,7 +71,5 @@ export const generateReport = async () => {
     });
   });
 
-  console.log(reportItemsWithStockCounts);
+  return reportItemsWithStockCounts;
 };
-
-await generateReport();

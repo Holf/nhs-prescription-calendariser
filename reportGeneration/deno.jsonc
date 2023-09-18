@@ -1,8 +1,8 @@
 {
   "tasks": {
-    "test": "deno test --watch",
-    "dev": "deno run --check=all --watch --allow-read src/reporting/generateReport.ts",
-    "report": "deno run --check=all --allow-read src/reporting/generateReport.ts",
+    "test": "deno test --watch --allow-read",
+    "dev": "deno run --check=all --watch --allow-read --allow-write src/reporting/index.ts",
+    "report": "deno run --check=all --allow-read --allow-write src/reporting/index.ts",
     "update": "deno run --check=all --allow-read --allow-write --allow-net=api.patientaccess.com src/updatingFromApi/updateRepeatsDataStore.ts"
   },
   "imports": {

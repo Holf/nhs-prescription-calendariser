@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Repeat Prescription Report</title>
+  </head>
+  <body>
+    <div class="p-6">
+      <table class="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
+        <thead class="bg-gray-800 text-white">
+          <tr>
+            <% tableHeaders.forEach(item => { %>
+            <th class="text-left py-3 px-4 uppercase font-semibold text-sm">
+              <%= item %>
+            </th>
+            <% }); %>
+          </tr>
+        </thead>
+        <tbody class="text-gray-700">
+          <% reportData.forEach(({name, stockInfo, prescriptionInfo}) => { %>
+          <tr>
+            <td class="text-left py-3 px-4 border-b"><%= name %></td>
+            <td class="text-left py-3 px-4 border-b">
+              <%= stockInfo.dailyDose %>
+            </td>
+            <td class="text-left py-3 px-4 border-b">
+              <%= stockInfo.stockCount %>
+            </td>
+            <td class="text-left py-3 px-4 border-b">
+              <%- stockInfo.daysUntilStockIsDepleted %>
+            </td>
+            <td class="text-left py-3 px-4 border-b text-amber-500 font-bold">
+              <%= stockInfo.uncollectedStockCount %>
+            </td>
+            <td class="text-left py-3 px-4 border-b">
+              <%- prescriptionInfo.daysUntilRepeatCanBeOrdered %>
+            </td>
+          </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    </div>
+  </body>
+</html>
