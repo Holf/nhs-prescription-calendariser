@@ -2,7 +2,7 @@ const fs = require("fs/promises");
 
 const { chromium } = require("@playwright/test");
 
-const loginTimeoutInMs = 180 * 1000;
+const loginTimeoutInMs = 5 * 60 * 1000;
 
 (async () => {
     const browser = await chromium.launch({ headless: false });
