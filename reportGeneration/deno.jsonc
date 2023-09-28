@@ -5,8 +5,8 @@
     "generate-report": "deno run --check=all --allow-read --allow-write src/reporting/index.ts",
     "update-data": "deno run --check=all --allow-read --allow-write --allow-net=api.patientaccess.com src/updatingFromApi/updateRepeatsDataStore.ts",
     "generate-access-token": "npm start --prefix ../accessTokenRetrieval/",
-    "open-report": "chromium-browser report.html",
-    "report": "deno task generate-access-token && deno task update-data && deno task generate-report && deno task open-report"
+    "report": "deno task generate-report && chromium-browser report.html",
+    "start": "deno task generate-access-token && deno task update-data && deno task report"
   },
   "imports": {
     "@src/": "./src/",
