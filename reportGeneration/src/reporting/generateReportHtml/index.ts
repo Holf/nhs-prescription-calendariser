@@ -27,7 +27,7 @@ const formatDaysUntilStockIsDepleted = (daysUntilStockIsDepleted: number) => {
     daysUntilStockIsDepleted <= x.days
   )?.colour;
 
-  return daysUntilStockIsDepleted <= 7
+  return daysUntilStockIsDepleted <= 10
     ? `<span class="font-bold ${colour}">${daysUntilStockIsDepleted}</span>`
     : daysUntilStockIsDepleted;
 };
