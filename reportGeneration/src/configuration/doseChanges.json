@@ -1,0 +1,24 @@
+[
+  {
+    "medicationName": "Paracetamol",
+    "doseChanges": [
+      {
+        "dateOfChange": "2023-08-22T23:00:00.000Z",
+        "newDailyDose": 1
+      },
+      {
+        "dateOfChange": "2023-08-23T23:00:00.000Z",
+        "newDailyDose": 2
+      }
+    ]
+  },
+  {
+    "medicationName": "Ibuprofen",
+    "doseChanges": [
+      {
+        "dateOfChange": "2023-08-22T23:00:00.000Z",
+        "newDailyDose": 3
+      }
+    ]
+  }
+]

@@ -1,0 +1,1 @@
+Files in this folder are included in .gitignore, to prevent private details being accidentally pushed to public repos.

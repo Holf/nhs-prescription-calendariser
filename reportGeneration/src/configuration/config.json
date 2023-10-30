@@ -1,0 +1,4 @@
+{
+  "//": "Array of strings which will be used as aearch terms for medications to include when generating reports.",
+  "medicationsOfInterest": ["ibuprofen", "paracetamol"]
+}
